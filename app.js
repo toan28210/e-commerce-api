@@ -5,7 +5,7 @@ connect();
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
-// import api from './routes/api.js';``
+import api from './routes/api.js';
 import bodyParser from 'body-parser';
 import { checkExpired } from './app/http/controllers/post.js';
 const __dirname = path.resolve();
@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
-// app.use('/api', api);
+app.use('/api', api);
 
 setInterval( async () => {
     await checkExpired();
