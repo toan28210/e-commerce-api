@@ -2,11 +2,12 @@ const router = require("express").Router();
 const stripe = require("stripe")(process.env.STRIPE_KEY)
 
 router.post("/payment", (req, res) => {
-    stripe.charges.create(
+     stripe.charges.create(
       {
-        source: req.body.tokenId,
         amount: req.body.amount,
-        currency: "usd",
+        currency: 'usd',
+        source: req.body.tokenId,
+        description: 'My First Test Charge (created for API docs at https://www.stripe.com/docs/api)',
       },
       (stripeErr, stripeRes) => {
         if (stripeErr) {

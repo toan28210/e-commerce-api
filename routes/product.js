@@ -17,7 +17,7 @@ router.post("/", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //UPDATE
-router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
+router.patch("/:id", async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
@@ -52,10 +52,23 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
+//GET HOT PRODUCT
+router.get("/hot", async (req, res) => {
+  try{
+    var query = { sold: -1 };
+    const product = await Product.find().sort(query)
+
+    res.status(200).json(product)
+  } catch(err) {
+    res.status(500).json(err)
+  }
+})
+
 //GET ALL PRODUCTS
 router.get("/", async (req, res) => {
   const qNew = req.query.new;
   const qCategory = req.query.category;
+  const qSearch = req.query.search;
   try {
     let products;
     if (qNew) {
@@ -66,6 +79,8 @@ router.get("/", async (req, res) => {
           $in: [qCategory],
         },
       });
+    }else if(qSearch){
+      products = await Product.find({ $text: { $search: qSearch } });
     } else {
       products = await Product.find();
     }
