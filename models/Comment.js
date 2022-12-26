@@ -1,15 +1,13 @@
 const mongoose = require("mongoose")
 
-const ProductSchema = new mongoose.Schema(
+const CommentSchema = new mongoose.Schema(
     {
         title: {type: String, required: true, uinique: true},
         desc:{type: String, required: true},
         img:{type: String, required: true},
         amount:{type: Number, required: true},
         sold:{type: Number, required: true, default: 0},
-        like:{type: Number, required: true, default: 0},
-        rating: {type: Number, required: true, default: 0},
-        reviewscore: {type: Number, required: true, default: 0},
+        like:{type: Number, required: true},
         categories:{type: Array},
         size:{type: Array},
         color:{type: Array},
@@ -18,7 +16,4 @@ const ProductSchema = new mongoose.Schema(
     },
     {timestamps: true}
 )
-
-ProductSchema.index({title: 'text', desc: 'text'})
-
-module.exports = mongoose.model("Product", ProductSchema)
+module.exports = mongoose.model("Comment", CommentSchema)
