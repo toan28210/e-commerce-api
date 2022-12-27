@@ -1,7 +1,8 @@
-const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
-const User = require("../models/User");
-const router = require("express").Router();
+import { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } from "./verifyToken.js";
+import User from "../models/User.js";
+import  { Router } from "express";
 
+const router = Router();
 //UPDATE
 router.put("/:id", async (req, res) => {
     if (req.body.password) {
@@ -87,4 +88,4 @@ router.get("/find/:id", async (req, res) => {
 
   
 
-module.exports = router;
+export default router;

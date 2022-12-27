@@ -1,11 +1,9 @@
-const Address = require("../models/Address");
-const {
-  verifyToken,
-  verifyTokenAndAuthorization,
-  verifyTokenAndAdmin,
-} = require("./verifyToken");
+import  Address  from "../app/models/Address.js";
+import {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} from './verifyToken.js'
 
-const router = require("express").Router();
+
+import { Router } from "express";
+const router = Router();;
 
 //CREATE
 
@@ -53,4 +51,4 @@ router.get("/find/:userId", async (req, res) => {
 //     }
 //   });
 
-module.exports = router;
+export default router;

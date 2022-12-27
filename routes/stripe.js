@@ -1,5 +1,6 @@
-const router = require("express").Router();
-const stripe = require("stripe")(process.env.STRIPE_KEY)
+import { Router } from "express";
+const router = Router();
+import stripe from "stripe";
 
 router.post("/payment", (req, res) => {
      stripe.charges.create(
@@ -20,4 +21,4 @@ router.post("/payment", (req, res) => {
   });
 
 
-module.exports = router;
+export default router;

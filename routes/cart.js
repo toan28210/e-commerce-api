@@ -1,14 +1,9 @@
-const Cart = require("../models/Cart");
-const {
-  verifyToken,
-  verifyTokenAndAuthorization,
-  verifyTokenAndAdmin,
-} = require("./verifyToken");
-
-const router = require("express").Router();
+import Cart from "../app/models/Cart.js"
+import {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} from './verifyToken.js'
+import { Router } from "express";
+const router = Router();;
 
 //CREATE
-
 router.post("/", async (req, res) => {
   const newCart = new Cart(req.body);
   try {
@@ -78,4 +73,4 @@ router.post("/check", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

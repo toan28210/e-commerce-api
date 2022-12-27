@@ -1,11 +1,9 @@
-const Like = require("../models/Like");
-const {
-  verifyToken,
-  verifyTokenAndAuthorization,
-  verifyTokenAndAdmin,
-} = require("./verifyToken");
+import Like from "../app/models/Like.js";
+import {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} from './verifyToken.js'
 
-const router = require("express").Router();
+
+import { Router } from "express";
+const router = Router();;
 
 //CREATE
 
@@ -42,4 +40,4 @@ router.delete("/:id", async (req, res) => {
     }
   });
 
-module.exports = router;
+export default router;

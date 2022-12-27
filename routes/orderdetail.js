@@ -1,11 +1,9 @@
-const OrderDetail = require("../models/OrderDetail");
-const {
-  verifyToken,
-  verifyTokenAndAuthorization,
-  verifyTokenAndAdmin,
-} = require("./verifyToken");
+import OrderDetail from "../app/models/OrderDetail.js";
+import {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} from './verifyToken.js'
 
-const router = require("express").Router();
+
+import { Router } from "express";
+const router = Router();;
 
 //CREATE
 
@@ -104,4 +102,4 @@ router.get("/find/:orderId", async (req, res) => {
 //   }
 // });
 
-module.exports = router;
+export default router;
