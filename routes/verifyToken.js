@@ -1,16 +1,24 @@
 import jwt from 'jsonwebtoken'
+import HTTPStatus from 'http-status';
 const verifyToken = (req, res, next) => {
-  const authHeader = req.headers.token;
-  if (authHeader) {
-    const token = authHeader.split(" ")[1];
-    jwt.verify(token, process.env.JWT_SEC, (err, user) => {
-      if (err) res.status(403).json("Token is not valid!");
-      req.user = user;
-      next();
-    });
-  } else {
-    return res.status(401).json("You are not authenticated!");
+  const {
+    headers: { authorization },
+  } = req;
+  const token = authorization && authorization.split(' ').pop();
+  if (!token) {
+    return res
+      .status(HTTPStatus.UNAUTHORIZED)
+      .json({ message: 'you are not authenticated!' });
   }
+  try {
+    const decoded = jwt.verify(token, TOKEN_KEY);
+    req.user = decoded;
+  } catch (err) {
+    return res
+      .status(HTTPStatus.UNAUTHORIZED)
+      .json({ message: '"Token is not valid!"' });
+  }
+  return next();
 };
 
 const verifyTokenAndAuthorization = (req, res, next) => {
