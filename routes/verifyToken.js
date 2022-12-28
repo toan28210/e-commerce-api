@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken'
 import HTTPStatus from 'http-status';
+import env from '../config/config.js'
+const { TOKEN_KEY } = env;
 const verifyToken = (req, res, next) => {
   const {
     headers: { authorization },
