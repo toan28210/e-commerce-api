@@ -8,5 +8,7 @@ export default {
   ACCESS_KEY: process.env.ACCESS_KEY,
   SECRET_KEY:process.env.SECRET_KEY,
   API_MOMO:process.env.API_MOMO,
+  JWT_SEC:process.env.JWT_SEC,
+  PASS_SEC:process.env.PASS_SEC,
 };
 

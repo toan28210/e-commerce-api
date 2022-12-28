@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import HTTPStatus from 'http-status';
 import env from '../config/config.js'
-const { TOKEN_KEY } = env;
+const { JWT_SEC } = env;
 const verifyToken = (req, res, next) => {
   const {
     headers: { authorization },
@@ -13,7 +13,7 @@ const verifyToken = (req, res, next) => {
       .json({ message: 'you are not authenticated!' });
   }
   try {
-    const decoded = jwt.verify(token, TOKEN_KEY);
+    const decoded = jwt.verify(token, JWT_SEC);
     req.user = decoded;
   } catch (err) {
     return res
