@@ -17,6 +17,7 @@ import likes from "./routes/like.js";
 import ratingRoute from "./routes/rating.js";
 import addressRoute from "./routes/address.js";
 import orderDetailRoute from "./routes/orderdetail.js";
+import recommendRoute from "./routes/recommend.js";
 // import { checkExpired } from './app/http/controllers/post.js';
 const __dirname = path.resolve();
 
@@ -39,4 +40,5 @@ app.use("/api/like", likes);
 app.use("/api/rating", ratingRoute);
 app.use("/api/address", addressRoute);
 app.use("/api/orderdetails", orderDetailRoute);
+app.use("/api/recommend", recommendRoute)
 export default app;

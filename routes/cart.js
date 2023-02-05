@@ -30,11 +30,20 @@ router.put("/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+//Delete all cart 
+router.delete("/:user_id", async (req, res) => {
+  try {
+    await Cart.deleteMany({userId: req.params.user_id})
+    res.status(200).json("Cart has been deleted...");
+  } catch (err) {
+    res.status(500).json(err)
+  }
+});
 
 //DELETE
-router.delete("/:id", async (req, res) => {
+router.delete("/find/:id", async (req, res) => {
   try {
-    await Cart.findByIdAndDelete(req.params.id);
+    await Cart.deleteOne({_id: req.params.id});
     res.status(200).json("Cart has been deleted...");
   } catch (err) {
     res.status(500).json(err);

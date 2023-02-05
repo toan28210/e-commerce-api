@@ -14,6 +14,7 @@ import likes from "./routes/like.js";
 import ratingRoute from "./routes/rating.js";
 import addressRoute from "./routes/address.js";
 import orderDetailRoute from "./routes/orderdetail.js";
+import recommendRoute from "./routes/recommend.js";
 
 dotenv.config();
 
@@ -36,6 +37,8 @@ app.use("/api/like", likes);
 app.use("/api/rating", ratingRoute);
 app.use("/api/address", addressRoute);
 app.use("/api/orderdetails", orderDetailRoute);
+app.use("/api/orderdetails", orderDetailRoute);
+app.use("/api/recommend", recommendRoute)
 
 app.listen(process.env.PORT || 5000, () => {
     console.log("Backend server is rungning")
