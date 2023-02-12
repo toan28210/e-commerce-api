@@ -1,7 +1,9 @@
 import Order from "../app/models/Order.js";
-import {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} from './verifyToken.js'
+import { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } from './verifyToken.js'
 
 import { Router } from "express";
+import OrderDetail from "../app/models/OrderDetail.js";
+import Product from "../app/models/Product.js";
 const router = Router();;
 
 //CREATE
@@ -49,7 +51,40 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
 //GET USER ORDERS
 router.get("/find/:userId", async (req, res) => {
   try {
-    const orders = await Order.find({ userId: req.params.userId });
+    const orders = await Order.aggregate([
+      {
+        $match: { userId: req.params.userId }
+      },
+      {
+        "$project": {
+          "_id": {
+            "$toString": "$_id"
+          }
+        }
+      },
+      {
+        $lookup: {
+          "from": "orderdetails",
+          "localField": "_id",
+          "foreignField": "orderId",
+          "as": "orderDetails"
+        },
+      },
+    ]);
+    const a = await Promise.all(
+      orders.map(async (element) => {
+        if (element.orderDetails) {
+         await Promise.all(element.orderDetails.map(async (e) => {
+            const product = await Product.findById({ _id: e.productId });
+            if (product) {
+              e.product=product;
+            }
+          })
+          );
+        };
+      })
+    );
+
     res.status(200).json(orders);
   } catch (err) {
     res.status(500).json(err);
