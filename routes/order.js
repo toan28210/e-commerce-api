@@ -59,7 +59,12 @@ router.get("/find/:userId", async (req, res) => {
         "$project": {
           "_id": {
             "$toString": "$_id"
-          }
+          },
+          amount: 1,
+          userId: 1,
+          status: 1,
+          address: 1,
+          status: 1
         }
       },
       {
@@ -71,6 +76,7 @@ router.get("/find/:userId", async (req, res) => {
         },
       },
     ]);
+    console.log(orders);
     const a = await Promise.all(
       orders.map(async (element) => {
         if (element.orderDetails) {
