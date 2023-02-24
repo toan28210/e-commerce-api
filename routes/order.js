@@ -4,6 +4,7 @@ import { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } from '.
 import { Router } from "express";
 import OrderDetail from "../app/models/OrderDetail.js";
 import Product from "../app/models/Product.js";
+import Address from "../app/models/Address.js";
 const router = Router();;
 
 //CREATE
@@ -88,6 +89,10 @@ router.get("/find/:userId", async (req, res) => {
           })
           );
         };
+        if (element.address) {
+          const address = await Address.findById(element.address);
+          element.address= address;
+        };
       })
     );
 
@@ -102,6 +107,14 @@ router.get("/find/:userId", async (req, res) => {
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
     const orders = await Order.find();
+    const a = await Promise.all(
+      orders.map(async (element) => {
+        if (element.address) {
+          const address = await Address.findById(element.address);
+          element.address= address;
+        };
+      })
+    );
     res.status(200).json(orders);
   } catch (err) {
     res.status(500).json(err);
