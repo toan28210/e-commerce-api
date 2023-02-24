@@ -3,13 +3,10 @@ const AddressSchema = new mongoose.Schema(
     {
         userId: {type: String, required: true},
         name: {type: String, required: true},
-        email: {type: String, required: true},
         phone: {type: Number, required: true},
+        addressStreet: {type: String, required: true},
         address: {type: String, required: true},
-        zipcode: {type: String, required: true},
-        city: {type: String, required: true},
-        country: {type: String, required: true}
-
+        isdefault: {type: Boolean, required: false, default: false}
     },
     {timestamps: true}
 )

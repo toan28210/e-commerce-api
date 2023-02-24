@@ -1,71 +1,49 @@
-// import { Router } from 'express';
-// import jwt from 'jsonwebtoken';
-// import bcrypt from 'bcryptjs';
-// import HTTPStatus from 'http-status';
-// import cookieSession from 'cookie-session';
-// import User from '../app/models/user.js';
-// import env from '../config/config.js';
-// import passport from '../config/passport.js';
-// const { TOKEN_KEY } = env;
-// const router = Router();
-// router.use(
-//   cookieSession({
-//     name: 'project',
-//     maxAge: 30 * 24 * 60 * 60 * 1000,
-//     keys: ['key1', 'key2'],
-//   })
-// );
-
-// router.post('/login', async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
-//     if (!(email && password)) {
-//       return res.status(HTTPStatus.BAD_REQUEST).send({
-//         message:
-//           'Vui lòng không để trống thông tin đăng nhập! Bao gồm Email và Mật khẩu!'
-//       });
-//     }
-//     const oldUser = await User.findOne({ email });
-//     if (oldUser && (await bcrypt.compare(password, oldUser.password))) {
-//       if(oldUser.blocked == true){
-//         return res.status(HTTPStatus.OK).json({message:"Tài khoản của bạn đã bị khóa. Vui lòng liên hệ với Quản trị viên để biết thêm thông tin"});
-//       }
-//       const token = jwt.sign({ user_id: oldUser._id, username: oldUser.username, role:oldUser.role }, TOKEN_KEY, {
-//         algorithm: 'HS256',
-//         expiresIn: '2h',
-//       });
-//       const {username,role,createdAt,updatedAt,id,avatar}= oldUser
-      
-//       return res.status(HTTPStatus.OK).json({email,username,role,id,token,avatar});
-//     } 
-//     return res.status(HTTPStatus.OK).json({message:"Thông tin đăng nhập không chính xác! Hãy kiểm tra lại Username hoặc Password"});
-//   } catch (err) {
-//     return res.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(err.message);
-//   }
-// }
-// );
-
-// const isLoggedIn = (req, res, next) => {
-//   if (req.user) {
-//     next();
-//   } else {
-//     return res.status(HTTPStatus.UNAUTHORIZED).redirect('/login');
-//   }
-// };
-
-// router.get('/login/failed', (req, res) =>
-//   res
-//     .status(HTTPStatus.UNAUTHORIZED)
-//     .json({ message: 'Đăng nhập không thành công!' })
-// );
-
-// export default router;
-
 import { Router } from "express";
 const router = Router();;
 import User from "../models/User.js";
 import CryptoJS from "crypto-js";
 import jwt from "jsonwebtoken";
+import fs from 'fs'
+import fastcsv from 'fast-csv'
+
+const fakedata = async () => {
+      try {
+          for (let i = 0; i < 200; i++) {
+            let username1 = "User"+i
+            let password = CryptoJS.AES.encrypt("1234567a", process.env.PASS_SEC)
+            let email1 = "User"+i+"@gmail.com"
+            const newUser = new User({
+                username: username1,
+                email: email1,
+                password: password,
+            })
+            await newUser.save()
+          }
+  
+      } catch(e) {
+          console.log(e);
+      }
+  }
+  function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+  }
+
+const handleWriteFileUser = async () => {
+	const ws = fs.createWriteStream("/Users/toantran/Downloads/DOAN_2/shopapi/data/users.csv");
+    try {
+        let users = await User.find()
+        console.log(users)
+        const lines = users.map(({_id, username, password, email, isAdmin }) => `${_id.toString()},${username},${password},${email},${isAdmin}`).join('\n');
+        console.log("data: ", lines);
+
+        ws.write('_id,email,password,phone,username\n')
+        ws.write(lines)
+        ws.end()
+
+    } catch(e) {
+        console.log(e);
+    }
+}
 
 
 //REGISTER
@@ -77,13 +55,14 @@ router.post("/register", async (req, res)=>{
     })
     try{
         const saveUser = await newUser.save()
+        // fakedata()
+        handleWriteFileUser()
+
         res.status(201).json(saveUser)
-        console.log(saveUser)
+        // console.log(saveUser)
     }catch(e){
         res.status(500).json(e)
     }
-    
-
 })
 
 //LOGIN

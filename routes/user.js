@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import  { Router } from "express";
 
 const router = Router();
+
 //UPDATE
 router.put("/:id", async (req, res) => {
     if (req.body.password) {

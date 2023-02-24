@@ -37,7 +37,6 @@ app.use("/api/like", likes);
 app.use("/api/rating", ratingRoute);
 app.use("/api/address", addressRoute);
 app.use("/api/orderdetails", orderDetailRoute);
-app.use("/api/orderdetails", orderDetailRoute);
 app.use("/api/recommend", recommendRoute)
 
 app.listen(process.env.PORT || 5000, () => {

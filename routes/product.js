@@ -4,14 +4,34 @@ import {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} from './v
 
 import { Router } from "express";
 const router = Router();;
+import fs from 'fs'
+import fastcsv from 'fast-csv'
+
+const handleWriteFileUser = async () => {
+	const ws = fs.createWriteStream("/Users/toantran/Downloads/DOAN_2/shopapi/data/products.csv");
+    try {
+        let users = await Product.find()
+        console.log(users)
+        const lines = users.map(({_id, amount, title}) => `${_id.toString()},${amount.toString()},${title}`).join('\n');
+        console.log("data: ", lines);
+
+        ws.write('_id,desc,title\n')
+        ws.write(lines)
+        ws.end()
+
+    } catch(e) {
+        console.log(e);
+    }
+}
 
 //CREATE
 
-router.post("/", verifyTokenAndAdmin, async (req, res) => {
+router.post("/", async (req, res) => {
   const newProduct = new Product(req.body);
 
   try {
     const savedProduct = await newProduct.save();
+    handleWriteFileUser()
     res.status(200).json(savedProduct);
   } catch (err) {
     res.status(500).json(err);

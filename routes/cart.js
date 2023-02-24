@@ -53,7 +53,7 @@ router.delete("/find/:id", async (req, res) => {
 //GET USER CART
 router.get("/find/:userId", async (req, res) => {
   try {
-    const cart = await Cart.find({ userId: req.params.userId });
+    const cart = await Cart.find({ userId: req.params.userId }).populate();
     res.status(200).json(cart);
   } catch (err) {
     res.status(500).json(err);

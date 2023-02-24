@@ -28,6 +28,58 @@ router.get("/find/:userId", async (req, res) => {
   }
 })
 
+router.get("/find/add/:addressId", async (req, res) => {
+  try{
+    const address = await Address.find({_id: req.params.addressId})
+    res.status(200).json(address)
+  } catch(err) {
+    res.status(500).json(err)
+  }
+})
+
+router.get("/find/default/:userId", async (req, res) => {
+  try{
+    const address = await Address.find({userId: req.params.userId, isdefault: true})
+    res.status(200).json(address)
+  } catch(err) {
+    res.status(500).json(err)
+  }
+})
+
+//UPDATE
+router.patch("/:addressId", async (req, res) => {
+  try {
+    const updatedAddressDefault = await Address.findByIdAndUpdate(
+      req.params.addressId,
+      {
+        $set: { isdefault: req.body.isdefault },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedAddressDefault);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
+//UPDATEs]
+router.patch("/user/:userId", async (req, res) => {
+  try {
+    const updatedAddressDefault = await Address.updateMany(
+      {userId: req.params.userId },
+      {
+        $set: { isdefault: req.body.isdefault }
+      },
+      { new: true }
+    );
+    console.log(updatedAddressDefault);
+    res.status(200).json(updatedAddressDefault);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 //DELETE
 // router.delete("/:id", async (req, res) => {
 //     const productId = req.body.productId

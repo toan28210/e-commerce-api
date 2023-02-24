@@ -300,7 +300,7 @@ def recommend(user_id):
 			prediction = pd.Series(prediction)
 			prediction = prediction.sort_values(ascending=False)
 			
-			recommended = prediction[:3]
+			recommended = prediction[:10]
 	#                     print("---------------------------------------------Hello------------------------------" )
 	                    # print("As per  approach....Following products are recommended...")
 	#                     print(recommended,recommended.dtypes)
@@ -326,7 +326,7 @@ def recommend(user_id):
 				if(words1[i]==words2[j]):
 					del words2[j]
 					chk=0
-					break;
+					break
 	#         if(chk==1):
 			words.append(words1[i])
 		for j in range(len(words2)):

@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
 
 router.get("/find/:orderId", async (req, res) => {
     try {
-      const orders = await OrderDetail.find({ orderId: req.params.orderId });
+      const orders = await OrderDetail.find({ orderId: req.params.orderId }).populate();
       res.status(200).json(orders);
     } catch (err) {
       res.status(500).json(err);

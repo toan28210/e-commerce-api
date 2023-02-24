@@ -56,7 +56,7 @@ router.get("/:user_id", async (req, resAPI) => {
             console.log("dataNew: ", newData0)
             console.log("newdata:",newData[1])
             try {
-                const products = await Product.find({ _id: { $in: [ newData0[5],newData[1], newData[2]] }});
+                const products = await Product.find({ _id: { $in: [ newData0[5],newData[1], newData[2], ,newData[3], ,newData[4], ,newData[5], ,newData[6], ,newData[7], ,newData[8], ,newData[9]] }});
                 resAPI.status(200).json(products);
             } catch (err) {
                 resAPI.status(500).json(err);
